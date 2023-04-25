@@ -79,37 +79,46 @@ class _StorageScreenState extends State<StorageScreen> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           const SizedBox(height: 16),
-          Column(
-            children: List.generate(
-              listFiles.length,
-              (index) {
-                ImageCustomInfo imageInfo = listFiles[index];
-                return ListTile(
-                  onTap: () {
-                    selectImage(imageInfo);
-                  },
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
-                    child: Image.network(
-                      imageInfo.urlDownload,
-                      width: 48,
-                      height: 48,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  title: Text(imageInfo.name),
-                  subtitle: Text(imageInfo.size),
-                  trailing: IconButton(
-                    onPressed: () {
-                      deleteImage(imageInfo);
+          Expanded(
+            // Apesar de não falarmos no vídeo, você pode sempre usar o Scrollbar
+            // caso queira mostrar uma barra de rolagem em um widget de scroll
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(
+                    listFiles.length,
+                    (index) {
+                      ImageCustomInfo imageInfo = listFiles[index];
+                      return ListTile(
+                        onTap: () {
+                          selectImage(imageInfo);
+                        },
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(24),
+                          child: Image.network(
+                            imageInfo.urlDownload,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(imageInfo.name),
+                        subtitle: Text(imageInfo.size),
+                        trailing: IconButton(
+                          onPressed: () {
+                            deleteImage(imageInfo);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        ),
+                      );
                     },
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
                   ),
-                );
-              },
+                ),
+              ),
             ),
           )
         ]),
