@@ -16,7 +16,7 @@ class StorageService {
         .ref("$pathService/$fileName.png")
         .getDownloadURL();
 
-    _firebaseAuth.currentUser!.updatePhotoURL(url);
+    await _firebaseAuth.currentUser!.updatePhotoURL(url);
 
     return url;
   }
@@ -59,7 +59,7 @@ class StorageService {
   Future<void> deleteByReference({required ImageCustomInfo imageInfo}) async {
     if (_firebaseAuth.currentUser!.photoURL != null) {
       if (_firebaseAuth.currentUser!.photoURL! == imageInfo.urlDownload) {
-        _firebaseAuth.currentUser!.updatePhotoURL(null);
+        await _firebaseAuth.currentUser!.updatePhotoURL(null);
       }
     }
     return await imageInfo.ref.delete();

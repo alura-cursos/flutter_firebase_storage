@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_storage/storage/models/image_custom_info.dart';
 import 'package:flutter_firebase_storage/storage/services/storage_service.dart';
@@ -19,6 +20,7 @@ class _StorageScreenState extends State<StorageScreen> {
   List<ImageCustomInfo> listFiles = [];
 
   final StorageService _storageService = StorageService();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -142,13 +144,9 @@ class _StorageScreenState extends State<StorageScreen> {
   }
 
   reload() {
-    // _storageService
-    //     .getDownloadUrlByFileName(fileName: "user_photo")
-    //     .then((urlDownload) {
-    //   setState(() {
-    //     urlPhoto = urlDownload;
-    //   });
-    // });
+    setState(() {
+      urlPhoto = _firebaseAuth.currentUser!.photoURL;
+    });
 
     _storageService.listAllFiles().then((List<ImageCustomInfo> listFilesInfo) {
       setState(() {
@@ -158,13 +156,14 @@ class _StorageScreenState extends State<StorageScreen> {
   }
 
   selectImage(ImageCustomInfo imageInfo) {
+    _firebaseAuth.currentUser!.updatePhotoURL(imageInfo.urlDownload);
     setState(() {
       urlPhoto = imageInfo.urlDownload;
     });
   }
 
   deleteImage(ImageCustomInfo imageInfo) {
-    _storageService.deleteByReference(ref: imageInfo.ref).then((value) {
+    _storageService.deleteByReference(imageInfo: imageInfo).then((value) {
       if (urlPhoto == imageInfo.urlDownload) {
         urlPhoto = null;
       }
