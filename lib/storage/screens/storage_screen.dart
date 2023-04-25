@@ -75,12 +75,32 @@ class _StorageScreenState extends State<StorageScreen> {
             "Histórico de Imagens",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
+          const SizedBox(height: 16),
           Column(
             children: List.generate(
               listFiles.length,
               (index) {
                 String url = listFiles[index];
-                return Image.network(url);
+                return ListTile(
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: Image.network(
+                      url,
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  title: const Text("Nome da imagem"),
+                  subtitle: const Text("Tamanho da imagem"),
+                  trailing: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                );
               },
             ),
           )
@@ -107,6 +127,7 @@ class _StorageScreenState extends State<StorageScreen> {
           setState(() {
             urlPhoto = urlDownload;
           });
+          reload();
         });
       } else {
         showSnackBar(context: context, mensagem: "Nenhuma imagem selecionada.");
