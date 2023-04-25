@@ -20,6 +20,12 @@ class _StorageScreenState extends State<StorageScreen> {
   final StorageService _storageService = StorageService();
 
   @override
+  void initState() {
+    reload();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -96,7 +102,7 @@ class _StorageScreenState extends State<StorageScreen> {
         .then((XFile? image) {
       if (image != null) {
         _storageService
-            .upload(file: File(image.path), fileName: "user_photo")
+            .upload(file: File(image.path), fileName: DateTime.now().toString())
             .then((String urlDownload) {
           setState(() {
             urlPhoto = urlDownload;
@@ -109,11 +115,17 @@ class _StorageScreenState extends State<StorageScreen> {
   }
 
   reload() {
-    _storageService
-        .getDownloadUrlByFileName(fileName: "user_photo")
-        .then((urlDownload) {
+    // _storageService
+    //     .getDownloadUrlByFileName(fileName: "user_photo")
+    //     .then((urlDownload) {
+    //   setState(() {
+    //     urlPhoto = urlDownload;
+    //   });
+    // });
+
+    _storageService.listAllFiles().then((List<String> listUrlsDownload) {
       setState(() {
-        urlPhoto = urlDownload;
+        listFiles = listUrlsDownload;
       });
     });
   }
