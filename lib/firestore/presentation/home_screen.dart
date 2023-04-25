@@ -4,6 +4,7 @@ import 'package:flutter_firebase_storage/authentication/components/show_senha_co
 import 'package:flutter_firebase_storage/authentication/services/auth_service.dart';
 import 'package:flutter_firebase_storage/firestore/services/listin_service.dart';
 import 'package:flutter_firebase_storage/firestore_produtos/presentation/produto_screen.dart';
+import 'package:flutter_firebase_storage/storage/screens/storage_screen.dart';
 import 'package:uuid/uuid.dart';
 import '../models/listin.dart';
 
@@ -41,6 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     : "",
               ),
               accountEmail: Text(widget.user.email!),
+            ),
+            ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text("Mudar foto de perfil"),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StorageScreen(),
+                    ));
+              },
             ),
             ListTile(
               leading: const Icon(
