@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_firebase_storage/storage/models/image_custom_info.dart';
 
 class StorageService {
   String pathService = "images";
@@ -19,15 +20,30 @@ class StorageService {
         .getDownloadURL();
   }
 
-  Future<List<String>> listAllFiles() async {
+  Future<List<ImageCustomInfo>> listAllFiles() async {
     ListResult result = await _firebaseStorage.ref(pathService).listAll();
     List<Reference> listReferences = result.items;
 
-    List<String> listFiles = [];
+    List<ImageCustomInfo> listFiles = [];
 
     for (Reference reference in listReferences) {
       String urlDownload = await reference.getDownloadURL();
-      listFiles.add(urlDownload);
+      String name = reference.name;
+
+      FullMetadata metadados = await reference.getMetadata();
+      int? size = metadados.size;
+
+      String sizeString = "Sem informação de tamanho.";
+
+      if (size != null) {
+        sizeString = "${size / 1000} Kb";
+      }
+
+      listFiles.add(ImageCustomInfo(
+          urlDownload: urlDownload,
+          name: name,
+          size: sizeString,
+          ref: reference));
     }
 
     return listFiles;
