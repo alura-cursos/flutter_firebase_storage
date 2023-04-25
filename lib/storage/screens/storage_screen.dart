@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_storage/storage/models/image_custom_info.dart';
 import 'package:flutter_firebase_storage/storage/services/storage_service.dart';
@@ -59,19 +58,19 @@ class _StorageScreenState extends State<StorageScreen> {
         child: Column(children: [
           // Se quiser testar, substitua por uma pasta e um arquivo
           // que existam no seu Firebase Storage
-          FutureBuilder(
-            future: FirebaseStorage.instance
-                .ref(
-                    "SrzSIf5jjMgLr7eZCdCAGpoIKDK2/2023-04-19 13:38:28.013466.png")
-                .getDownloadURL(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return Image.network(snapshot.data!);
-              }
-            },
-          ),
+          // FutureBuilder(
+          //   future: FirebaseStorage.instance
+          //       .ref(
+          //           "SrzSIf5jjMgLr7eZCdCAGpoIKDK2/2023-04-19 13:38:28.013466.png")
+          //       .getDownloadURL(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.connectionState == ConnectionState.waiting) {
+          //       return const Center(child: CircularProgressIndicator());
+          //     } else {
+          //       return Image.network(snapshot.data!);
+          //     }
+          //   },
+          // ),
           (urlPhoto != null)
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(64),
