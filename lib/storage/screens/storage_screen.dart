@@ -89,7 +89,11 @@ class _StorageScreenState extends State<StorageScreen> {
       if (image != null) {
         _storageService
             .upload(file: File(image.path), fileName: "user_photo")
-            .then((value) => reload());
+            .then((String urlDownload) {
+          setState(() {
+            urlPhoto = urlDownload;
+          });
+        });
       } else {
         showSnackBar(context: context, mensagem: "Nenhuma imagem selecionada.");
       }
