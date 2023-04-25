@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../authentication/components/show_snackbar.dart';
 
 class StorageScreen extends StatefulWidget {
   const StorageScreen({super.key});
@@ -42,6 +45,7 @@ class _StorageScreenState extends State<StorageScreen> {
           (urlPhoto != null)
               ? Image.network(urlPhoto!)
               : const CircleAvatar(
+                  radius: 64,
                   child: Icon(Icons.person),
                 ),
           const Padding(
@@ -66,7 +70,24 @@ class _StorageScreenState extends State<StorageScreen> {
     );
   }
 
-  uploadImage() {}
+  uploadImage() {
+    ImagePicker imagePicker = ImagePicker();
+
+    imagePicker
+        .pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 2000,
+      maxWidth: 2000,
+      imageQuality: 50,
+    )
+        .then((XFile? image) {
+      if (image != null) {
+        showSnackBar(context: context, mensagem: image.path, isErro: false);
+      } else {
+        showSnackBar(context: context, mensagem: "Nenhuma imagem selecionada.");
+      }
+    });
+  }
 
   reload() {}
 }
